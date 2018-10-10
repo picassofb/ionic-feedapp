@@ -1,0 +1,36 @@
+page-singup {
+    $colors: (
+        primary:    #488aff,
+        secondary:  #32db64,
+        danger:     #f53d3d,
+        light:      #f4f4f4,
+        dark:       #222,
+        twitter:    #55acee
+    );
+    .masters{
+        background-color:  color($colors, danger);
+    }
+
+    .logo{
+        font-size: 25vh;
+        margin-top : 40px;
+        margin-bottom: 20px;
+    }
+
+    h1, h6{
+        color: white;
+        font-size: 1em;
+    }
+
+    .rowStyle{
+        background-color: white;
+        padding-left: 10px;
+        border-radius: 30px;
+        margin-top: 10px;
+
+        ion-icon{
+            margin-top: 13px;
+            margin-right: 10px;
+        }
+    }
+}
