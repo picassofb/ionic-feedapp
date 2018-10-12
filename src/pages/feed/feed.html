@@ -1,13 +1,64 @@
 
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>feed</ion-title>
+  <ion-navbar color="danger">
+    <ion-title>Yorr Feed</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only clear>
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
+  <ion-row margin class="rowStyle">
 
+    <button ion-button icon-only color="danger" clear>
+      <ion-icon name="images"></ion-icon>
+    </button>
+
+    <ion-input type="text" placeholder="Escribe algo..." [(ngModel)]="text"></ion-input>
+
+    <button ion-button icon-only color="danger" clear (click)="post()">
+        <ion-icon name="send" ></ion-icon>
+    </button>
+  </ion-row>
+
+  <ion-card *ngFor="let post of posts">
+    <ion-item-divider color="danger">
+      {{ post.data().owner_name }} dice:
+    </ion-item-divider>
+
+    <ion-item text-wrap>
+        {{ post.data().text }}
+    </ion-item>
+
+    <ion-row class="bottom-bar">
+      <ion-col >
+        <button ion-button block icon-left clear small color="danger" class="border-right">
+          <ion-icon name="thumbs-up"></ion-icon>
+          <small> 15 likes</small>
+        </button>
+      </ion-col>
+
+      <ion-col >
+          <button ion-button block icon-left clear small color="danger"  class="border-right">
+              <ion-icon name="text"></ion-icon>
+              <small>12 comentarios</small>
+          </button>
+      </ion-col>
+
+      <ion-col >
+          <button ion-button block icon-left clear small color="danger">
+              <small>Hace 15 mins.</small>
+          </button>
+      </ion-col>
+    </ion-row>
+
+  </ion-card>
 </ion-content>
