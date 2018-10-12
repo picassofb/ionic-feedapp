@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
+import { FeedPage } from '../feed/feed';
 
 
 
@@ -42,6 +43,7 @@ export class SingupPage {
               text: "OK",
               handler: () => {
                 //Ir hacia la ventana principal
+                this.navCtrl.setRoot(FeedPage);
               }
             }
           ]
