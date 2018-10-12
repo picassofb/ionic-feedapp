@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
 import { SingupPage } from '../singup/singup';
+import firebase from 'firebase';
+
 
 @Component({
   selector: 'page-login',
@@ -8,8 +10,34 @@ import { SingupPage } from '../singup/singup';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController) {
+  email: string="";
+  password: string = "";
 
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController) {
+
+  }
+
+  login(){
+    firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+    .then((user)=>{
+
+      console.log('Usuario', user);
+
+      this.toastCtrl.create({
+        message: "Welcome " + user.user.displayName,
+        duration: 3000
+      }).present();
+
+    }).catch((err)=>{
+
+      console.log('Error', err);
+
+      this.toastCtrl.create({
+        message: err.message,
+        duration: 3000
+      }).present();
+
+    })
   }
 
   gotoSingup(){
