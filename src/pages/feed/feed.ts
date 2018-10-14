@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import firebase from 'firebase';
+import moment from 'moment';
 
 /**
  * Generated class for the FeedPage page.
@@ -25,7 +26,7 @@ export class FeedPage {
   getPosts(){
     this.posts = [];
     
-    firebase.firestore().collection("posts").get()
+    firebase.firestore().collection("posts").orderBy("created","desc").get()
     .then((docs)=>{
       docs.forEach((doc)=>{
         this.posts.push(doc);
@@ -51,6 +52,11 @@ export class FeedPage {
     }).catch((err)=>{
       console.log('Error', err)
     })
+  }
+
+  ago(time){
+    let difference = moment(time).diff(moment());
+    return moment.duration(difference).humanize();
   }
 
 }

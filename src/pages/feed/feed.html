@@ -55,7 +55,7 @@
 
       <ion-col >
           <button ion-button block icon-left clear small color="danger">
-              <small>Hace 15 mins.</small>
+              <small>{{ ago(post.data().created.toDate()) }}</small>
           </button>
       </ion-col>
     </ion-row>
