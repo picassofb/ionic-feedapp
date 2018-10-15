@@ -17,4 +17,8 @@ page-feed {
             border-right: map-get($colors , light );
         }
     }
+
+    .round-corners{
+        border-radius: 24px;
+    }
 }

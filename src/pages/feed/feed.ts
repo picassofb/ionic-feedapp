@@ -23,6 +23,7 @@ export class FeedPage {
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
+  image: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
@@ -83,10 +84,16 @@ export class FeedPage {
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
       owner_name: firebase.auth().currentUser.displayName
-    }).then((doc) =>{
+    }).then(async (doc) =>{
       console.log('Doc', doc);
 
+      if(this.image){
+        await this.upload(doc.id);
+      }
+
       this.text = "";
+      this.image = undefined;
+      
       let toast =  this.toastCtrl.create({
         message: "Su mensaje fue publicado correctamente!",
         duration: 3000
@@ -171,9 +178,46 @@ export class FeedPage {
 
     this.camera.getPicture(options).then((base64Image)=>{
       console.log(base64Image);
+
+      this.image = "data:image/png;base64," + base64Image;
+
     }).catch((err)=>{
       console.log(err);
     })
+  }
+
+  upload(name: string){
+
+    return new Promise((resolve, reject)=>{
+
+      let ref = firebase.storage().ref("postImages/" + name);
+
+      let uploadTask = ref.putString(this.image.split(',')[1],"base64");
+  
+      uploadTask.on("state_changed", (taskSnapshot)=>{
+          console.log(taskSnapshot);
+      }, (error)=>{
+          console.log(error);
+      }, ()=>{
+          console.log("The upload is complete!");
+          uploadTask.snapshot.ref.getDownloadURL().then((url)=>{
+              console.log(url);
+  
+              firebase.firestore().collection("posts").doc(name).update({
+                image: url
+              }).then(()=>{
+                resolve();
+              }).catch((err)=>{
+                 reject(); 
+              })
+              
+          }).catch((err)=>{
+             reject(); 
+          })
+      })
+
+    })
+   
   }
 
 }
