@@ -93,7 +93,7 @@ export class FeedPage {
 
       this.text = "";
       this.image = undefined;
-      
+
       let toast =  this.toastCtrl.create({
         message: "Su mensaje fue publicado correctamente!",
         duration: 3000
@@ -190,12 +190,19 @@ export class FeedPage {
 
     return new Promise((resolve, reject)=>{
 
+      let loading =  this.loadingCtrl.create({
+        content: "Subiendo imagen..."
+      })
+
       let ref = firebase.storage().ref("postImages/" + name);
 
       let uploadTask = ref.putString(this.image.split(',')[1],"base64");
   
-      uploadTask.on("state_changed", (taskSnapshot)=>{
+      uploadTask.on("state_changed", (taskSnapshot: any)=>{
           console.log(taskSnapshot);
+          let porcentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes*100;
+          loading.setContent("Subiendo " + porcentage + "%...");
+
       }, (error)=>{
           console.log(error);
       }, ()=>{
@@ -206,12 +213,15 @@ export class FeedPage {
               firebase.firestore().collection("posts").doc(name).update({
                 image: url
               }).then(()=>{
+                loading.dismiss();
                 resolve();
               }).catch((err)=>{
+                loading.dismiss();
                  reject(); 
               })
               
           }).catch((err)=>{
+            loading.dismiss();
              reject(); 
           })
       })
