@@ -5,7 +5,7 @@
     <ion-title>Yorr Feed</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only clear>
+      <button ion-button icon-only clear (click)="logOut()">
         <ion-icon name="log-out"></ion-icon>
       </button>
     </ion-buttons>
@@ -18,7 +18,7 @@
 <ion-content >
   <ion-row margin class="rowStyle">
 
-    <button ion-button icon-only color="danger" clear>
+    <button ion-button icon-only color="danger" clear (click)="addPhoto()">
       <ion-icon name="images"></ion-icon>
     </button>
 
@@ -28,6 +28,10 @@
         <ion-icon name="send" ></ion-icon>
     </button>
   </ion-row>
+
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <ion-card *ngFor="let post of posts">
     <ion-item-divider color="danger">
@@ -61,4 +65,9 @@
     </ion-row>
 
   </ion-card>
+
+  <ion-infinite-scroll (ionInfinite) = "loadMorePosts($event)" >
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>
