@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
-import moment, { duration } from 'moment';
+import moment,{ duration } from 'moment';
 import { LoginPage } from '../login/login';
 import {Camera, CameraOptions, EncodingType} from '@ionic-native/camera';
 
