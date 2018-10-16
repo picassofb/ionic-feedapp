@@ -5,6 +5,8 @@ import moment,{ duration } from 'moment';
 import { LoginPage } from '../login/login';
 import {Camera, CameraOptions, EncodingType} from '@ionic-native/camera';
 
+import {HttpClient} from  '@angular/common/http';
+
 /**
  * Generated class for the FeedPage page.
  *
@@ -27,7 +29,7 @@ export class FeedPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
-    private camera: Camera) {
+    private camera: Camera, private http: HttpClient) {
     this.getPosts();
   }
 
@@ -228,6 +230,24 @@ export class FeedPage {
 
     })
    
+  }
+
+  like(post){
+
+    let body = {
+      postId: post.id,
+      userId: firebase.auth().currentUser.uid,
+      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
+    }
+
+    this.http.post("https://us-central1-feedlyapp-b26c2.cloudfunctions.net/updateLikesCount",
+      JSON.stringify(body), { responseType: "text" 
+    }).subscribe((data)=>{
+       console.log(data);
+    }, (error) => {
+      console.log(error);
+    })
+
   }
 
 }

@@ -11,9 +11,9 @@ admin.initializeApp(functions.config().firebase);
  
     console.log(request.body);
 
-    const postId = request.body.postId;
-    const userId = request.body.userId;
-    const action = request.body.action; // Like or unlike
+    const postId = JSON.parse(request.body).postId;    
+    const userId = JSON.parse(request.body).userId;    
+    const action = JSON.parse(request.body).action;
 
     admin.firestore().collection("posts").doc(postId).get().then((data)=>{
         let likesCount =  data.data().likesCount || 0;
