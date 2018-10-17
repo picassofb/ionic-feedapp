@@ -44,17 +44,23 @@ export class FeedPage {
     let query = firebase.firestore().collection("posts").orderBy("created","desc")
     .limit(this.pageSize);
     
-/*    query.onSnapshot((snapshot)=>{
+    query.onSnapshot((snapshot)=>{
       let changeDocs = snapshot.docChanges();
       
       changeDocs.forEach((change)=>{
 
             if(change.type == "added"){
-              //TODO 
+              
             }
 
             if(change.type == "modified"){
-              
+ 
+              for(let i =0; i< this.posts.length; i++){
+                if(this.posts[i].id == change.doc.id){
+                  this.posts[i] = change.doc;
+                }    
+              }
+
             }
 
             if(change.type == "removed"){
@@ -64,7 +70,7 @@ export class FeedPage {
         });
         
       });
-  */
+  
       query.get().then((docs)=>{
         docs.forEach((doc)=>{
           this.posts.push(doc);
@@ -195,6 +201,7 @@ export class FeedPage {
       let loading =  this.loadingCtrl.create({
         content: "Subiendo imagen..."
       })
+      loading.present();
 
       let ref = firebase.storage().ref("postImages/" + name);
 
@@ -237,15 +244,36 @@ export class FeedPage {
     let body = {
       postId: post.id,
       userId: firebase.auth().currentUser.uid,
-      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
+      action: post.data().likes && post.data().
+              likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
     }
+
+    let toast = this.toastCtrl.create({
+      message: "Actualizando like... Por favor espere."
+    });
+
+    toast.present();
+
+    //let headers = new Headers();
+    //headers.append("Content-Type", "multipart/form-data");
 
     this.http.post("https://us-central1-feedlyapp-b26c2.cloudfunctions.net/updateLikesCount",
       JSON.stringify(body), { responseType: "text" 
     }).subscribe((data)=>{
-       console.log(data);
+      console.log(data);
+      toast.setMessage("Like actualizado!");
+      
+      setTimeout(()=>{
+        toast.dismiss()
+      },3000)
+
     }, (error) => {
       console.log(error);
+      toast.setMessage(error.message);
+      
+      setTimeout(()=>{
+        toast.dismiss()
+      },3000)
     })
 
   }
