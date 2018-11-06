@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ToastController, 
+         ActionSheetController, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
 import moment,{ duration } from 'moment';
 import { LoginPage } from '../login/login';
 import {Camera, CameraOptions, EncodingType} from '@ionic-native/camera';
 
 import {HttpClient} from  '@angular/common/http';
+import { populateNodeData } from 'ionic-angular/umd/components/virtual-scroll/virtual-util';
 
 /**
  * Generated class for the FeedPage page.
@@ -29,7 +31,9 @@ export class FeedPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
-    private camera: Camera, private http: HttpClient) {
+    private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController) 
+  {
     this.getPosts();
   }
 
@@ -276,6 +280,63 @@ export class FeedPage {
       },3000)
     })
 
+  }
+
+  comment(post){
+    this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text:"Ver todos los comentarios",
+          handler: () => {
+             //TODO 
+          }
+        },
+        {
+          text:"Nuevo Comentario",
+          handler: () => {
+            this.alertCtrl.create({
+              title: "Nuevo Comentario",
+              message: "Digite su comentario",
+              inputs: [
+                {
+                  name: "comment",
+                  type: "text"
+                }
+              ],
+              buttons:[
+                {
+                  text:"Cancel"
+                },
+                {
+                  text: "Post",
+                  handler: (data) => {
+                    if(data.comment){
+                      firebase.firestore().collection("comments").add({
+                        text: data.comment,
+                        post: post.id,
+                        owner: firebase.auth().currentUser.uid,
+                        owner_name: firebase.auth().currentUser.displayName,
+                        created: firebase.firestore.FieldValue.serverTimestamp()
+                      }).then((doc)=>{
+                        this.toastCtrl.create({
+                          message: "Comentario creado correctamente",
+                          duration: 3000
+                        }).present();
+                      }).catch((err)=>{
+                        this.toastCtrl.create({
+                          message: err.message,
+                          duration: 3000
+                        }).present();
+                      })
+                    }
+                  }
+                }
+              ]                
+            }).present();
+          }
+        }
+      ]
+    }).present();
   }
 
 }
