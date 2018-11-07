@@ -61,7 +61,7 @@
       <ion-col >
           <button ion-button block icon-left clear small color="danger"  class="border-right" (click)="comment(post)">
               <ion-icon name="text"></ion-icon>
-              <small>12 comentarios</small>
+              <small>{{ post.data().commentsCount || 0 }} comentarios</small>
           </button>
       </ion-col>
 

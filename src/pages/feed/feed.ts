@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController, 
-         ActionSheetController, AlertController } from 'ionic-angular';
+         ActionSheetController, AlertController, ModalController } from 'ionic-angular';
 import firebase from 'firebase';
 import moment,{ duration } from 'moment';
 import { LoginPage } from '../login/login';
@@ -8,6 +8,7 @@ import {Camera, CameraOptions, EncodingType} from '@ionic-native/camera';
 
 import {HttpClient} from  '@angular/common/http';
 import { populateNodeData } from 'ionic-angular/umd/components/virtual-scroll/virtual-util';
+import { CommentsPage } from '../comments/comments';
 
 /**
  * Generated class for the FeedPage page.
@@ -32,7 +33,7 @@ export class FeedPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
     private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController,
-    private alertCtrl: AlertController) 
+    private alertCtrl: AlertController, private modalCtrl: ModalController) 
   {
     this.getPosts();
   }
@@ -288,7 +289,9 @@ export class FeedPage {
         {
           text:"Ver todos los comentarios",
           handler: () => {
-             //TODO 
+            this.modalCtrl.create(CommentsPage, {
+              "post": post
+            }).present();
           }
         },
         {

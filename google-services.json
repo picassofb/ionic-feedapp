@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1079982883561",
+    "firebase_url": "https://feedlyapp-b26c2.firebaseio.com",
+    "project_id": "feedlyapp-b26c2",
+    "storage_bucket": "feedlyapp-b26c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079982883561:android:cd80d732809e7365",
+        "android_client_info": {
+          "package_name": "tech.eduardosalazar.feedly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079982883561-614na14lp9vhhrb33sg5oudinsc0j72u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.eduardosalazar.feedly",
+            "certificate_hash": "962049102ab4a4d7cb577107a4f5937e77601da0"
+          }
+        },
+        {
+          "client_id": "1079982883561-qhi1m21tphda64vf568dttstlc31rt3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAgSpDhzyFI0bras_ZHi6PKfKf-5jKcP0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079982883561-qhi1m21tphda64vf568dttstlc31rt3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
