@@ -5,6 +5,8 @@ import firebase from 'firebase';
 import moment,{ duration } from 'moment';
 import { LoginPage } from '../login/login';
 import {Camera, CameraOptions, EncodingType} from '@ionic-native/camera';
+import {Firebase} from '@ionic-native/firebase';
+
 
 import {HttpClient} from  '@angular/common/http';
 import { populateNodeData } from 'ionic-angular/umd/components/virtual-scroll/virtual-util';
@@ -33,9 +35,32 @@ export class FeedPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private loadingCtrl: LoadingController, private toastCtrl: ToastController,
     private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController,
-    private alertCtrl: AlertController, private modalCtrl: ModalController) 
+    private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase) 
   {
     this.getPosts();
+
+    this.firebaseCordova.getToken().then((token)=>{
+      console.log('Token', token)
+
+      this.updateToken(token, firebase.auth().currentUser.uid)
+
+    }).catch((err)=>{
+      console.log('Error', err)
+    })
+  }
+
+  updateToken(token: string, uid: string){
+
+    firebase.firestore().collection("users").doc(uid).set({
+      token: token,
+      tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
+    }, {
+      merge: true
+    }).then(()=>{
+      console.log("Token guardado en firestore");
+    }).catch(err=>{
+      console.log(err);
+    })
   }
 
   getPosts(){
