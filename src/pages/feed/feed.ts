@@ -58,7 +58,7 @@ export class FeedPage {
       merge: true
     }).then(()=>{
       console.log("Token guardado en firestore");
-    }).catch(err=>{
+    }).catch((err)=>{
       console.log(err);
     })
   }
